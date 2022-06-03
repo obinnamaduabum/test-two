@@ -10,4 +10,9 @@ public class MyUtils {
     public static Date dateOfTypeStringToDate(String dateString, String datePattern) throws ParseException {
         return new SimpleDateFormat(datePattern, Locale.ENGLISH).parse(dateString);
     }
+
+
+    public static String dateToString(Date date, String datePattern) {
+        return new SimpleDateFormat(datePattern, Locale.ENGLISH).format(date);
+    }
 }

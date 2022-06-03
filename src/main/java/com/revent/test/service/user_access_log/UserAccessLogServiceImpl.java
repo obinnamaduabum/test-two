@@ -1,7 +1,8 @@
 package com.revent.test.service.user_access_log;
 
-import com.google.inject.Inject;
+import com.google.gson.Gson;
 import com.google.inject.Singleton;
+import com.revent.test.UserAccessLogoPojo;
 import com.revent.test.dao.UserAccessLogDao;
 import com.revent.test.entity.UserAccessLog;
 import com.revent.test.projection.UserAccessProjection;
@@ -32,7 +33,8 @@ public class UserAccessLogServiceImpl implements UserAccessLogService {
        // this.userAccessLogDao.save(userAccessLog);
     }
 
-    public void init(String fileName) {
+    public void init(String fileName, String startDateAsString, String endDateAsString, long range) {
+
         try {
 
             if(this.getTotalCount() <= 0L) {
@@ -58,16 +60,13 @@ public class UserAccessLogServiceImpl implements UserAccessLogService {
                 this.logger.info("Already loaded!");
             }
 
-            String startDateAsString = "2022-01-01 13:00:00";
-            String endDateAsString = "2022-01-01 14:00:00";
-
             Date startDate = MyUtils.dateOfTypeStringToDate(startDateAsString, "yyyy-MM-dd HH:mm:ss");
             Date endDate = MyUtils.dateOfTypeStringToDate(endDateAsString, "yyyy-MM-dd HH:mm:ss");
 
-//            List<UserAccessProjection> logList = this.userAccessLogService.findAllHavingMoreThanHundredWithDateRange(startDate, endDate);
-//            for(UserAccessProjection userAccessLog: logList) {
-//                logger.info(this.gson.toJson(userAccessLog.getDate()));
-//            }
+            List<UserAccessLogoPojo> logList = this.findAllHavingMoreThanHundredWithDateRange(startDate, endDate, range);
+            for(UserAccessLogoPojo userAccessLog: logList) {
+                logger.info(new Gson().toJson(userAccessLog.getDate()));
+            }
 
         } catch (FileNotFoundException | ParseException e) {
             System.out.println("An error occurred.");
@@ -89,14 +88,7 @@ public class UserAccessLogServiceImpl implements UserAccessLogService {
     }
 
     @Override
-    public List<UserAccessProjection> findAllHavingMoreThanHundredWithDateRange(Date startDate, Date endDate) {
-        return null;
-        // return this.userAccessLogDao.findAllHavingMoreThanHundredWithDateRange(startDate, endDate);
-    }
-
-    @Override
-    public List<UserAccessProjection> findAllHavingMoreThanHundredWithDateRangeWithDateAsString(String startDate, String endDate) {
-        return null;
-        // return this.userAccessLogDao.findAllHavingMoreThanHundredWithDateRangeWithString(startDate, endDate);
+    public List<UserAccessLogoPojo> findAllHavingMoreThanHundredWithDateRange(Date startDate, Date endDate, long range) throws IllegalAccessException {
+        return this.userAccessLogDao.findAllHavingMoreThanHundredWithDateRange(startDate, endDate, range);
     }
 }

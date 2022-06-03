@@ -1,15 +1,15 @@
 package com.revent.test.service.user_access_log;
 
 
+import com.revent.test.UserAccessLogoPojo;
 import com.revent.test.entity.UserAccessLog;
-import com.revent.test.projection.UserAccessProjection;
 
 import java.util.Date;
 import java.util.List;
 
 public interface UserAccessLogService {
 
-    void init(String fileName);
+    void init(String fileName, String startDateAsString, String endDateAsString, long range);
 
     void save(UserAccessLog userAccessLog);
 
@@ -17,7 +17,5 @@ public interface UserAccessLogService {
 
     Long getTotalCount() throws Exception;
 
-    List<UserAccessProjection> findAllHavingMoreThanHundredWithDateRange(Date startDate, Date endDate);
-
-    List<UserAccessProjection> findAllHavingMoreThanHundredWithDateRangeWithDateAsString(String startDate, String endDate);
+    List<UserAccessLogoPojo> findAllHavingMoreThanHundredWithDateRange(Date startDate, Date endDate, long range) throws IllegalAccessException;
 }
